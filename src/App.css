@@ -11,6 +11,7 @@
 
 .welcome__logo {
   border-radius: 28px;
+  box-shadow: 0 8px 24px rgba(35, 48, 42, 0.08);
   animation: settle 600ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
