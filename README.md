@@ -31,6 +31,18 @@ npm test
 npm run build
 ```
 
+## How the app is laid out
+
+- `src/lib/api.ts` is the only place that talks to Supabase. Screens use
+  `useNest()` / `useReady()` from `src/lib/nest-context.ts`, and tests swap
+  the API for an in-memory fake (`src/test/fakeApi.ts`).
+- `src/modules/registry.tsx` lists every module once (key, name, colours,
+  icon, screen). Home, the All screen and the bottom bar all read from it.
+  The on/off switch for each key lives in the `household_modules` table.
+- The bottom bar always has five spots: Home, two personal pins, All and Us.
+- Routes are hash URLs (`#/`, `#/all`, `#/us`, `#/m/<module>`), so they work
+  on GitHub Pages without server rewrites.
+
 ## Database
 
 Schema changes live in `supabase/migrations/` as numbered SQL files and are

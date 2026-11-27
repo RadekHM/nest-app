@@ -1,51 +1,51 @@
-import { useEffect, useRef, useState } from 'react'
 import { NestLogo } from './components/NestLogo'
-import { WalkingBird } from './components/WalkingBird'
+import type { Api } from './lib/api'
+import { NestProvider } from './lib/nest'
+import { useNest } from './lib/nest-context'
+import { ToastProvider } from './lib/toast'
+import { Login } from './screens/Login'
+import { NamePhone } from './screens/NamePhone'
+import { Shell } from './Shell'
 import './App.css'
 
-const PEEPS = ['peep!', 'hi there!', 'cosy!', 'tweet!']
-
-// Placeholder home screen until login and the app shell arrive. It already
-// uses the Meadow design: tap the nest and it hops and says hello.
-export default function App() {
-  const [taps, setTaps] = useState(0)
-  const [peepOn, setPeepOn] = useState(false)
-  const timer = useRef<number | undefined>(undefined)
-
-  useEffect(() => () => window.clearTimeout(timer.current), [])
-
-  const sayHello = () => {
-    setTaps((t) => t + 1)
-    setPeepOn(true)
-    window.clearTimeout(timer.current)
-    timer.current = window.setTimeout(() => setPeepOn(false), 1400)
-  }
-
+export default function App({ api }: { api?: Api }) {
   return (
-    <main className="welcome rise">
-      <div className="welcome__brand">
-        <button
-          key={taps}
-          type="button"
-          className={taps > 0 ? 'welcome__logo hop' : 'welcome__logo'}
-          onClick={sayHello}
-          aria-label="Say hello to Nest"
-        >
-          <NestLogo size={112} />
-        </button>
-        {peepOn && (
-          <span className="welcome__peep pop-in" role="status">
-            {PEEPS[(taps - 1) % PEEPS.length]}
-          </span>
-        )}
-      </div>
-      <h1>nest</h1>
-      <p>Everything for home, in one cosy place.</p>
-      <div className="welcome__card">
-        <strong>We're building your nest</strong>
-        <span>Lists, to-dos and money are on their way.</span>
-        <WalkingBird />
-      </div>
-    </main>
+    <NestProvider api={api}>
+      <ToastProvider>
+        <Gate />
+      </ToastProvider>
+    </NestProvider>
   )
+}
+
+/** Decides what to show: loading, login, naming this phone, or the app. */
+function Gate() {
+  const { state, retry, signOut } = useNest()
+  switch (state.status) {
+    case 'loading':
+      return (
+        <main className="splash" aria-busy="true">
+          <NestLogo size={112} />
+          <span className="visually-hidden">Loading</span>
+        </main>
+      )
+    case 'logged-out':
+      return <Login />
+    case 'error':
+      return (
+        <main className="splash">
+          <NestLogo size={88} />
+          <h1>Something went wrong</h1>
+          <p>We couldn't open the nest. Check the connection and try again.</p>
+          <button type="button" className="button squish" onClick={retry}>
+            Try again
+          </button>
+          <button type="button" className="button button--quiet" onClick={() => void signOut()}>
+            Log out
+          </button>
+        </main>
+      )
+    case 'ready':
+      return state.sessionId && state.deviceName === null ? <NamePhone /> : <Shell />
+  }
 }

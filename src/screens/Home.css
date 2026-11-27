@@ -1,0 +1,99 @@
+.home-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.home-header__brand {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.home-header__logo {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.home-header__word {
+  font-size: 1.5rem;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+}
+
+.home-header__peep {
+  position: absolute;
+  left: 44px;
+  top: -18px;
+  padding: 4px 10px;
+  border-radius: 12px 12px 12px 2px;
+  background: var(--nav);
+  color: #ffffff;
+  font-size: 0.8rem;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.home-header__birds {
+  display: flex;
+}
+
+.home-header__bird {
+  border-radius: 50%;
+  border: 2.5px solid var(--bg);
+  box-sizing: content-box;
+}
+
+.home-header__bird + .home-header__bird {
+  margin-left: -10px;
+}
+
+.home-hello {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.home-hello svg {
+  flex-shrink: 0;
+}
+
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.home-hint {
+  margin: -6px 0 0;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.home-empty,
+.home-tip {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 20px 20px 36px;
+  border-radius: var(--radius-l);
+  background: var(--mint);
+}
+
+.home-tip {
+  padding-bottom: 20px;
+  background: var(--sky);
+}
+
+.home-empty span,
+.home-tip span {
+  color: var(--ink-soft);
+}
