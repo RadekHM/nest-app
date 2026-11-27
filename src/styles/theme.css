@@ -1,0 +1,198 @@
+/*
+ * Nest design tokens (Meadow direction) and the shared playful animations.
+ * Every animation is switched off when the phone asks for reduced motion.
+ */
+:root {
+  --bg: #f2f5ee;
+  --surface: #ffffff;
+  --surface-soft: #e4ede2;
+  --ink: #23302a;
+  --ink-soft: #56645b;
+  --accent: #3f6b4b;
+  --accent-soft: #8fb996;
+  --mint: #cfe5d2;
+  --peach: #f8dccb;
+  --lilac: #e3ddf2;
+  --sky: #d6e6f2;
+  --nav: #23302a;
+
+  --radius-s: 12px;
+  --radius-m: 22px;
+  --radius-l: 30px;
+  --shadow: 0 12px 30px rgba(35, 48, 42, 0.12);
+
+  --spring: cubic-bezier(0.3, 1.6, 0.5, 1);
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  color-scheme: light dark;
+  font-family: 'Nunito Variable', 'Nunito', ui-rounded, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #18201b;
+    --surface: #222c26;
+    --surface-soft: #2a362f;
+    --ink: #e8efe6;
+    --ink-soft: #a9b8ad;
+    --accent: #8fb996;
+    --accent-soft: #5d8a66;
+    --mint: #2f4535;
+    --peach: #4a3329;
+    --lilac: #3a3450;
+    --sky: #2b3e4d;
+    --nav: #0f1511;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+/* Screens and lists slide gently into place. */
+.rise {
+  animation: rise 0.45s var(--ease-out) both;
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* The logo's eggs wobble now and then, one after the other. */
+.egg-a,
+.egg-b {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: wobble 4.2s ease-in-out infinite;
+}
+.egg-b {
+  animation-delay: 2.1s;
+}
+@keyframes wobble {
+  0%,
+  70%,
+  100% {
+    transform: rotate(0);
+  }
+  76% {
+    transform: rotate(-7deg);
+  }
+  82% {
+    transform: rotate(6deg);
+  }
+  88% {
+    transform: rotate(-3deg);
+  }
+}
+
+.leaf-sway {
+  transform-box: fill-box;
+  transform-origin: 0% 100%;
+  animation: sway 3.6s ease-in-out infinite;
+}
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotate(-5deg);
+  }
+  50% {
+    transform: rotate(5deg);
+  }
+}
+
+/* A squashy hop, e.g. when the logo is tapped. */
+.hop {
+  animation: hop 0.55s var(--spring);
+}
+@keyframes hop {
+  30% {
+    transform: translateY(-10px) scale(0.94, 1.08);
+  }
+  60% {
+    transform: translateY(0) scale(1.08, 0.92);
+  }
+  100% {
+    transform: none;
+  }
+}
+
+/* A speech bubble that pops in. */
+.pop-in {
+  animation: pop-in 0.35s var(--spring) both;
+  transform-origin: 0% 100%;
+}
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.4);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Cards squish when pressed. */
+.squish {
+  transition: transform 0.25s var(--spring);
+}
+.squish:active {
+  transform: scale(0.94);
+}
+
+/* A little bird hopping across a card. */
+.bird {
+  position: absolute;
+  left: 0;
+  bottom: 4px;
+  animation: walk 14s linear infinite;
+}
+.bird-body {
+  animation: bird-hop 0.5s ease-in-out infinite;
+}
+@keyframes walk {
+  from {
+    transform: translateX(-40px);
+  }
+  to {
+    transform: translateX(360px);
+  }
+}
+@keyframes bird-hop {
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
