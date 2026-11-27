@@ -9,40 +9,60 @@
   text-align: center;
 }
 
+.welcome__brand {
+  position: relative;
+}
+
 .welcome__logo {
-  border-radius: 28px;
-  animation: settle 600ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  width: 136px;
+  height: 136px;
+  border-radius: 40px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.welcome__peep {
+  position: absolute;
+  left: 112px;
+  top: -14px;
+  padding: 5px 12px;
+  border-radius: 14px 14px 14px 3px;
+  background: var(--nav);
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 800;
+  white-space: nowrap;
 }
 
 .welcome h1 {
-  margin: 16px 0 0;
-  font-size: 2.5rem;
-  letter-spacing: -0.02em;
+  margin: 20px 0 0;
+  font-size: 2.75rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
 }
 
 .welcome p {
   margin: 0;
   color: var(--ink-soft);
+  font-size: 1.05rem;
 }
 
-.welcome__note {
-  margin-top: 24px !important;
-  font-size: 0.9rem;
+.welcome__card {
+  position: relative;
+  overflow: hidden;
+  margin-top: 28px;
+  width: min(100%, 340px);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 20px 20px 34px;
+  border-radius: var(--radius-l);
+  background: var(--mint);
 }
 
-@keyframes settle {
-  from {
-    opacity: 0;
-    transform: translateY(12px) scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .welcome__logo {
-    animation: none;
-  }
+.welcome__card span {
+  color: var(--ink-soft);
 }
