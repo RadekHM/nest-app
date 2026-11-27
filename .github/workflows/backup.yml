@@ -27,6 +27,10 @@ jobs:
             echo "::error::Add the SUPABASE_DB_URL and BACKUP_PASSPHRASE repository secrets."
             exit 1
           fi
+          # Port 6543 is the Transaction pooler, which pg_dump can't use.
+          case "$SUPABASE_DB_URL" in
+            *:6543/*) echo "::error::SUPABASE_DB_URL is the Transaction pooler (port 6543). Use the Session pooler string (port 5432)."; exit 1 ;;
+          esac
 
       # pg_dump must be at least the server's version (Postgres 17), so run it
       # from the official image instead of the runner's older client.
@@ -36,7 +40,10 @@ jobs:
           BACKUP_PASSPHRASE: ${{ secrets.BACKUP_PASSPHRASE }}
         run: |
           set -o pipefail
-          docker run --rm -e DB_URL="$SUPABASE_DB_URL" postgres:17 \
+          # Drop options such as ?pgbouncer=true, which are meant for ORMs and
+          # which pg_dump rejects.
+          DB_URL="${SUPABASE_DB_URL%%\?*}"
+          docker run --rm -e DB_URL="$DB_URL" postgres:17 \
             sh -c 'pg_dump --no-owner --no-privileges --schema=public --schema=auth "$DB_URL"' \
             | gzip -9 \
             | gpg --batch --yes --symmetric --cipher-algo AES256 \
