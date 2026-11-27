@@ -1,0 +1,51 @@
+name: Apply database migrations
+
+# Applies new files in supabase/migrations/ to the Supabase database when they
+# reach main. On a pull request it only does a dry run, which lists the
+# migrations that merging would apply.
+#
+# Supabase records applied migrations in supabase_migrations.schema_migrations,
+# so each file runs once. Uses the SUPABASE_DB_URL secret (Session pooler).
+on:
+  push:
+    branches: [main]
+    paths: ['supabase/migrations/**']
+  pull_request:
+    paths: ['supabase/migrations/**']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+# Never run two migration jobs against the database at the same time.
+concurrency:
+  group: database-migrations
+  cancel-in-progress: false
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Check the secret is set
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+        run: |
+          if [ -z "$SUPABASE_DB_URL" ]; then
+            echo "::error::Add the SUPABASE_DB_URL repository secret (Session pooler connection string)."
+            exit 1
+          fi
+
+      - name: ${{ github.event_name == 'pull_request' && 'List the migrations merging would apply' || 'Apply new migrations' }}
+        env:
+          SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+          DRY_RUN: ${{ github.event_name == 'pull_request' && '--dry-run' || '' }}
+        run: |
+          # Drop options such as ?pgbouncer=true, which the CLI doesn't need.
+          DB_URL="${SUPABASE_DB_URL%%\?*}"
+          npx --yes supabase@3.4.0 db push --remote="$DB_URL" --skip-vault $DRY_RUN

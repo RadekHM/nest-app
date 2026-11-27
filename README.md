@@ -46,7 +46,10 @@ npm run build
 ## Database
 
 Schema changes live in `supabase/migrations/` as numbered SQL files and are
-reviewed in pull requests before they are applied to the Supabase project.
+reviewed in pull requests. When a migration reaches `main`, the "Apply
+database migrations" workflow runs it on the Supabase project (each file runs
+once). On a pull request the same workflow does a dry run that lists what
+merging would apply.
 
 `supabase/tests/` runs every migration in an in-memory Postgres (PGlite) with
 a small stand-in for Supabase's `auth` schema and checks the row-level
@@ -66,6 +69,8 @@ key and the database password are never committed.
 
 - **CI**: lint, type check, tests and build on every pull request.
 - **Deploy**: builds and publishes to GitHub Pages on every push to `main`.
+- **Apply database migrations**: runs new migrations on Supabase when they
+  reach `main` (dry run on pull requests). Uses `SUPABASE_DB_URL`.
 - **Keep Supabase awake**: calls `public.ping()` twice a week so the free
   project never pauses.
 - **Back up the database**: weekly `pg_dump`, gzipped and encrypted with
