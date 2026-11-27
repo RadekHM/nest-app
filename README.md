@@ -36,6 +36,14 @@ npm run build
 Schema changes live in `supabase/migrations/` as numbered SQL files and are
 reviewed in pull requests before they are applied to the Supabase project.
 
+`supabase/tests/` runs every migration in an in-memory Postgres (PGlite) with
+a small stand-in for Supabase's `auth` schema and checks the row-level
+security rules for each kind of user. They run with `npm test`.
+
+Edge Functions live in `supabase/functions/`. `admin` handles the actions that
+need the secret key (creating accounts, setting passwords, disabling
+accounts) and only answers signed-in admins.
+
 ## Secrets
 
 `.env.production` holds only public values (the project URL and the
@@ -48,3 +56,7 @@ key and the database password are never committed.
 - **Deploy**: builds and publishes to GitHub Pages on every push to `main`.
 - **Keep Supabase awake**: calls `public.ping()` twice a week so the free
   project never pauses.
+- **Back up the database**: weekly `pg_dump`, gzipped and encrypted with
+  `BACKUP_PASSPHRASE`, kept 90 days as a workflow artifact. Needs the
+  `SUPABASE_DB_URL` (Session pooler connection string) and `BACKUP_PASSPHRASE`
+  repository secrets.
