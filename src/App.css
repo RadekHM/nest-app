@@ -1,68 +1,22 @@
-.welcome {
+.splash {
   min-height: 100dvh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   padding: 24px;
   text-align: center;
 }
 
-.welcome__brand {
-  position: relative;
-}
-
-.welcome__logo {
-  width: 136px;
-  height: 136px;
-  border-radius: 40px;
-  background: var(--surface);
-  box-shadow: var(--shadow);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.welcome__peep {
-  position: absolute;
-  left: 112px;
-  top: -14px;
-  padding: 5px 12px;
-  border-radius: 14px 14px 14px 3px;
-  background: var(--nav);
-  color: #ffffff;
-  font-size: 0.9rem;
-  font-weight: 800;
-  white-space: nowrap;
-}
-
-.welcome h1 {
-  margin: 20px 0 0;
-  font-size: 2.75rem;
+.splash h1 {
+  margin: 12px 0 0;
+  font-size: 1.6rem;
   font-weight: 900;
-  letter-spacing: -0.03em;
 }
 
-.welcome p {
-  margin: 0;
-  color: var(--ink-soft);
-  font-size: 1.05rem;
-}
-
-.welcome__card {
-  position: relative;
-  overflow: hidden;
-  margin-top: 28px;
-  width: min(100%, 340px);
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 20px 20px 34px;
-  border-radius: var(--radius-l);
-  background: var(--mint);
-}
-
-.welcome__card span {
+.splash p {
+  margin: 0 0 12px;
+  max-width: 300px;
   color: var(--ink-soft);
 }

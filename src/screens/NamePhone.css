@@ -1,0 +1,41 @@
+.name-phone {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 32px 20px;
+  text-align: center;
+}
+
+.name-phone h1 {
+  margin: 12px 0 0;
+  font-size: 2rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+.name-phone p {
+  margin: 0 0 14px;
+  max-width: 320px;
+  color: var(--ink-soft);
+}
+
+.name-phone__card {
+  width: min(100%, 360px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px;
+  border-radius: var(--radius-l);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  text-align: left;
+}
+
+.name-phone .name-phone__oops {
+  margin: 0;
+  color: var(--danger);
+  font-weight: 700;
+}

@@ -111,6 +111,11 @@ describe('profiles', () => {
     await expect(as(null, null, () => db.query(`select * from public.profiles`))).rejects.toThrow(/permission denied/)
   })
 
+  test('logged-out visitors cannot call the policy helpers', async () => {
+    await expect(as(null, null, () => db.query(`select public.is_admin()`))).rejects.toThrow(/permission denied/)
+    await expect(as(null, null, () => db.query(`select public.my_household()`))).rejects.toThrow(/permission denied/)
+  })
+
   test('members see everyone in the household', async () => {
     const { rows } = await asDidem(() => db.query(`select username from public.profiles`))
     expect(rows).toHaveLength(2)
@@ -148,6 +153,20 @@ describe('module switches', () => {
     const res = await asDidem(() =>
       db.query(`update public.household_modules set enabled = true where module_key = 'groceries'`),
     )
+    expect(res.affectedRows).toBe(0)
+  })
+
+  test('members still see the switches', async () => {
+    const { rows } = await asDidem(() => db.query(`select module_key from public.household_modules`))
+    expect(rows).toHaveLength(4)
+  })
+
+  test('members cannot add or remove modules', async () => {
+    const hh = (await db.query<{ id: string }>(`select id from public.households`)).rows[0].id
+    await expect(
+      asDidem(() => db.query(`insert into public.household_modules (household_id, module_key) values ($1, 'sneaky')`, [hh])),
+    ).rejects.toThrow(/row-level security/)
+    const res = await asDidem(() => db.query(`delete from public.household_modules`))
     expect(res.affectedRows).toBe(0)
   })
 

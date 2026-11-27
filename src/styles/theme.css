@@ -15,6 +15,11 @@
   --lilac: #e3ddf2;
   --sky: #d6e6f2;
   --nav: #23302a;
+  --mint-ink: #2d5037;
+  --peach-ink: #7a3e22;
+  --lilac-ink: #4e3f7a;
+  --sky-ink: #2e5574;
+  --danger: #a2462b;
 
   --radius-s: 12px;
   --radius-m: 22px;
@@ -46,6 +51,11 @@
     --lilac: #3a3450;
     --sky: #2b3e4d;
     --nav: #0f1511;
+    --mint-ink: #cfe5d2;
+    --peach-ink: #f8dccb;
+    --lilac-ink: #e3ddf2;
+    --sky-ink: #d6e6f2;
+    --danger: #f0a58c;
   }
 }
 
@@ -186,6 +196,70 @@ button {
   50% {
     transform: translateY(-4px);
   }
+}
+
+/* A gentle no-no shake, e.g. for a wrong password. */
+.shake {
+  animation: shake 0.45s ease-in-out;
+}
+@keyframes shake {
+  20% {
+    transform: translateX(-8px) rotate(-2deg);
+  }
+  40% {
+    transform: translateX(7px) rotate(2deg);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(3px);
+  }
+}
+
+/* The sun and moon float on the Home greeting. */
+.float {
+  animation: float 5s ease-in-out infinite;
+}
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(-4deg);
+  }
+  50% {
+    transform: translateY(-5px) rotate(4deg);
+  }
+}
+
+/* Lists rise in one after the other. */
+.stagger > * {
+  animation: rise 0.5s var(--ease-out) both;
+}
+.stagger > *:nth-child(2) {
+  animation-delay: 0.06s;
+}
+.stagger > *:nth-child(3) {
+  animation-delay: 0.12s;
+}
+.stagger > *:nth-child(4) {
+  animation-delay: 0.18s;
+}
+.stagger > *:nth-child(n + 5) {
+  animation-delay: 0.24s;
+}
+
+input {
+  font: inherit;
+  color: inherit;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
 }
 
 @media (prefers-reduced-motion: reduce) {
